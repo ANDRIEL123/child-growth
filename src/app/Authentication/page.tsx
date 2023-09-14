@@ -32,7 +32,7 @@ export default function AuthenticationPage() {
       </div>
       <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="/examples/authentication"
+          href="/login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
@@ -74,7 +74,7 @@ export default function AuthenticationPage() {
                 Crie um conta
               </h1>
               <p className="text-sm text-muted-foreground">
-                Informe seu melhor para criar a conta
+                Informe seu melhor email para criar a conta
               </p>
             </div>
             <UserAuthForm />
