@@ -1,4 +1,4 @@
-import AuthenticationPage from "./Authentication/page"
+import AuthenticationPage from "./Authentication/page";
 
 export default function Home() {
   return (

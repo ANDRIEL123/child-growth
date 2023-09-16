@@ -5,18 +5,28 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { setAuthenticationToken } from "@/services/auth"
+import { useRouter } from 'next/navigation'
 import React, { useState } from "react"
 
-const Login = () => {
+export default function Login() {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     async function onSubmit(event: React.SyntheticEvent) {
         event.preventDefault()
         setIsLoading(true)
+        try {
+            await setAuthenticationToken(email, password)
 
-        setTimeout(() => {
+            router.push('/users')
+        } catch (error) {
+            throw error
+        } finally {
             setIsLoading(false)
-        }, 3000)
+        }
     }
 
     return (
@@ -45,6 +55,7 @@ const Login = () => {
                                 id="email"
                                 placeholder="Informe seu e-mail"
                                 type="email"
+                                onChange={e => setEmail(e.target.value)}
                                 autoCapitalize="none"
                                 autoComplete="email"
                                 autoCorrect="off"
@@ -54,6 +65,7 @@ const Login = () => {
                                 id="password"
                                 placeholder="Informe sua senha"
                                 type="password"
+                                onChange={e => setPassword(e.target.value)}
                                 autoCapitalize="none"
                                 autoComplete="password"
                                 autoCorrect="offx"
@@ -72,5 +84,3 @@ const Login = () => {
         </div>
     )
 }
-
-export default Login

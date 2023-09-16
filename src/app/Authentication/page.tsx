@@ -2,8 +2,8 @@ import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 
-import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { UserAuthForm } from "./components/user-auth-form"
 
 export const metadata: Metadata = {
@@ -60,8 +60,8 @@ export default function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                O crescimento infantil é um processo fascinante, 
-                onde cada pequeno passo representa um salto gigantesco 
+                O crescimento infantil é um processo fascinante,
+                onde cada pequeno passo representa um salto gigantesco
                 em direção ao futuro brilhante que os aguarda.
               </p>
             </blockquote>
@@ -79,7 +79,7 @@ export default function AuthenticationPage() {
             </div>
             <UserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
-            Ao clicar em continuar, você concorda com nossos{" "}
+              Ao clicar em continuar, você concorda com nossos{" "}
               <Link
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
