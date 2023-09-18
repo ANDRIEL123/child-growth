@@ -5,12 +5,15 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { setAuthenticationToken } from "@/services/auth"
+import { AuthContext } from "@/contexts/Auth"
+import { getAuthentication } from "@/services/auth"
 import { useRouter } from 'next/navigation'
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 
 export default function Login() {
     const router = useRouter()
+    const authContext = useContext(AuthContext)
+
     const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -19,7 +22,12 @@ export default function Login() {
         event.preventDefault()
         setIsLoading(true)
         try {
-            await setAuthenticationToken(email, password)
+            const authentication = await getAuthentication(email, password)
+
+            authContext.login({
+                email,
+                token: authentication.accessToken
+            })
 
             router.push('/users')
         } catch (error) {

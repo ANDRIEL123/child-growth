@@ -1,18 +1,16 @@
 'use client'
 
+import { DataTable } from "@/components/DataTable";
+import { AuthContext } from "@/contexts/Auth";
 import { httpGet } from "@/services";
-import { useEffect, useState } from "react";
-
-interface User {
-    id: bigint,
-    name: string
-}
+import { useContext, useEffect, useState } from "react";
+import { userColumns } from "./userColumns";
 
 const UsersPage = () => {
+    const authContext = useContext(AuthContext)
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        // Update the document title using the browser API
         getUsers()
     });
 
@@ -23,11 +21,8 @@ const UsersPage = () => {
 
     return (
         <>
-            {
-                users.map((item: User) => (
-                    <h3 key={item.name}>{item.name}</h3>
-                ))
-            }
+            <h3>Bem vindo(a) {authContext.user?.email}</h3>
+            <DataTable columns={userColumns} data={users} />
         </>
     )
 }

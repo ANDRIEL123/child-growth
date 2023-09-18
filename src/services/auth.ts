@@ -1,10 +1,17 @@
-import { setItem } from './StorageService'
 import api from "./api"
 
-const setAuthenticationToken = async (
+type Authentication = {
+    accessToken: string,
+    expiresIn: string
+}
+
+/**
+ * Retorna os dados de autenticação
+ */
+const getAuthentication = async (
     email: string,
     password: string
-) => {
+): Promise<Authentication> => {
     const response = await api.get('/users/login', {
         params: {
             email,
@@ -12,11 +19,13 @@ const setAuthenticationToken = async (
         }
     })
 
-    setItem('access_token', response.data.accessToken)
-    setItem('expires_in', response.data.expiresIn)
+    return {
+        accessToken: response.data.accessToken,
+        expiresIn: response.data.expiresIn,
+    }
 }
 
 export {
-    setAuthenticationToken
+    getAuthentication
 }
 
