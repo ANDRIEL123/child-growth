@@ -7,25 +7,31 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AuthContext } from "@/contexts/Auth"
 import { getAuthentication } from "@/services/auth"
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import React, { useContext, useState } from "react"
+import { useContext, useState } from "react"
+import { useForm } from 'react-hook-form'
+
+import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
     const router = useRouter()
     const authContext = useContext(AuthContext)
+    const { register, handleSubmit, formState: {
+        errors
+    } } = useForm<UserSchemaFormData>({
+        resolver: zodResolver(userSchema)
+    });
 
     const [isLoading, setIsLoading] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
 
-    async function onSubmit(event: React.SyntheticEvent) {
-        event.preventDefault()
+    async function onSubmit(data: any) {
         setIsLoading(true)
         try {
-            const authentication = await getAuthentication(email, password)
+            const authentication = await getAuthentication(data.email, data.password)
 
             authContext.login({
-                email,
+                email: data.email,
                 token: authentication.accessToken
             })
 
@@ -40,45 +46,36 @@ export default function Login() {
     return (
         <div className="flex flex-col p-10">
             <div className="relative z-20 flex items-center text-lg font-medium">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="mr-2 h-6 w-6"
-                >
-                    <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-                </svg>
                 Child Growth
             </div>
             <div className="flex flex-col items-center justify-center mt-20">
                 <Label className="text-xl">Informe seus dados para acessar</Label>
-                <form onSubmit={onSubmit} className="w-full sm:w-1/3 lg mt-10">
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-full sm:w-1/3 lg mt-10"
+                >
                     <div className="grid gap-2">
                         <div className="grid gap-1">
                             <Input
                                 id="email"
                                 placeholder="Informe seu e-mail"
-                                type="email"
-                                onChange={e => setEmail(e.target.value)}
                                 autoCapitalize="none"
                                 autoComplete="email"
                                 autoCorrect="off"
-                                errorMessage="Sim"
+                                errorMessage={errors.email?.message}
                                 disabled={isLoading}
+                                {...register('email')}
                             />
                             <Input
                                 id="password"
                                 placeholder="Informe sua senha"
                                 type="password"
-                                onChange={e => setPassword(e.target.value)}
                                 autoCapitalize="none"
                                 autoComplete="password"
                                 autoCorrect="offx"
+                                errorMessage={errors.password?.message}
                                 disabled={isLoading}
+                                {...register('password')}
                             />
                         </div>
                         <Button disabled={isLoading}>
