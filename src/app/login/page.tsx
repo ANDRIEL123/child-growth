@@ -67,6 +67,7 @@ export default function Login() {
                                 autoCapitalize="none"
                                 autoComplete="email"
                                 autoCorrect="off"
+                                errorMessage="Sim"
                                 disabled={isLoading}
                             />
                             <Input

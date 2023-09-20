@@ -7,10 +7,24 @@ const api = axios.create({
 })
 
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        const message = response.data.message ?? 'Ação realizada com sucesso'
+        toast.success(message)
+        return response
+    },
     (error) => {
         const message = error.response.data.message ?? 'Ocorreu algum erro.'
-        toast.error(message)
+
+        switch (error.response.status) {
+            case 401:
+                toast.error('Usuário não autorizado.')
+                setTimeout(() => {
+                    window.location.href = "http://localhost:3000/login";
+                }, 2000)
+                break;
+            default:
+                toast.error(message)
+        }
 
         return Promise.reject(error);
     }
