@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { useContext, useState } from "react"
 import { useForm } from 'react-hook-form'
 
+// import { httpGet } from "@/services"
 import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
@@ -30,6 +31,13 @@ export default function Login() {
         try {
             const authentication = await getAuthentication(data.email, data.password)
 
+            // const users = await httpGet('/users/getbyfilters', {
+            //     filters: JSON.stringify([
+            //         { PropertyName: 'email', Operation: 'equals', Value: authContext.user?.email }
+            //     ])
+            // })
+
+            console.log(users)
             authContext.login({
                 email: data.email,
                 token: authentication.accessToken
@@ -58,7 +66,7 @@ export default function Login() {
                         <div className="grid gap-1">
                             <Input
                                 id="email"
-                                placeholder="Informe seu e-mail"
+                                placeholder="E-mail"
                                 autoCapitalize="none"
                                 autoComplete="email"
                                 autoCorrect="off"
@@ -68,7 +76,7 @@ export default function Login() {
                             />
                             <Input
                                 id="password"
-                                placeholder="Informe sua senha"
+                                placeholder="Senha"
                                 type="password"
                                 autoCapitalize="none"
                                 autoComplete="password"

@@ -73,13 +73,10 @@ export default function AuthenticationPage() {
               <h1 className="text-2xl font-semibold tracking-tight">
                 Crie um conta
               </h1>
-              <p className="text-sm text-muted-foreground">
-                Informe seu melhor email para criar a conta
-              </p>
             </div>
             <UserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
-              Ao clicar em continuar, você concorda com nossos{" "}
+              Ao clicar em confirmar, você concorda com nossos{" "}
               <Link
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"

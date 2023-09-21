@@ -2,29 +2,44 @@
 
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+import { httpPost } from "@/services"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { NewUserSchemaFormData, newUserSchema } from "./schema"
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
+  const { register, handleSubmit, formState: {
+    errors
+  } } = useForm<NewUserSchemaFormData>({
+    resolver: zodResolver(newUserSchema)
+  });
+
+  async function onSubmit(data: any) {
     setIsLoading(true)
 
-    setTimeout(() => {
+    try {
+      await httpPost('users', data)
+
+      router.push('/login')
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -32,40 +47,43 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
-              placeholder="name@example.com"
+              placeholder="E-mail"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
+              errorMessage={errors.email?.message}
               autoCorrect="off"
               disabled={isLoading}
+              {...register('email')}
+            />
+            <Input
+              id="password"
+              placeholder="Senha"
+              autoCapitalize="none"
+              type="password"
+              errorMessage={errors.password?.message}
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register('password')}
+            />
+            <Input
+              id="name"
+              placeholder="Nome"
+              autoCapitalize="none"
+              errorMessage={errors.name?.message}
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register('name')}
             />
           </div>
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Continue usando o Email
+            Confirmar
           </Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Ou continue usando
-          </span>
-        </div>
-      </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-        )}{" "}
-        Github
-      </Button>
     </div>
   )
 }

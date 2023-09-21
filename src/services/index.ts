@@ -9,7 +9,9 @@ const httpGet = async (endpoint: string, params?: object) => {
             headers: {
                 Authorization: token
             },
-            params
+            params: {
+                ...params
+            }
         })
 
         return response.data
