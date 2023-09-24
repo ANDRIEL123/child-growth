@@ -1,6 +1,7 @@
 'use client'
 
 import { DataTable } from "@/components/DataTable";
+import Header from "@/components/Header";
 import { AuthContext } from "@/contexts/Auth";
 import { httpGet } from "@/services";
 import { Suspense, useContext, useEffect, useState } from "react";
@@ -20,10 +21,13 @@ const UsersPage = () => {
     }, [])
 
     return (
-        <Suspense fallback={<p>Carregando...</p>}>
-            <h3>Bem vindo(a) {authContext.user?.email}</h3>
-            <DataTable columns={userColumns} data={users} />
-        </Suspense>
+        <>
+            <Header />
+            <Suspense fallback={<p>Carregando...</p>}>
+                <h3>Bem vindo(a) {authContext.user?.name}</h3>
+                <DataTable columns={userColumns} data={users} />
+            </Suspense>
+        </>
     )
 }
 

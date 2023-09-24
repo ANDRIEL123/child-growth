@@ -8,8 +8,11 @@ const api = axios.create({
 
 api.interceptors.response.use(
     (response) => {
-        const message = response.data.message ?? 'Ação realizada com sucesso'
-        toast.success(message)
+        const message = response.data.message
+        if (message) {
+            toast.success(message)
+        }
+
         return response
     },
     (error) => {
@@ -26,8 +29,8 @@ api.interceptors.response.use(
                 toast.error(message)
         }
 
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
-);
+)
 
 export default api

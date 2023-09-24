@@ -1,32 +1,33 @@
 'use client'
 
-import { setItem } from "@/services/StorageService";
+import { removeItem, setItem } from "@/services/StorageService";
+import { UserAuthProps } from "@/types/UserAuthProps";
 import React, { createContext, useEffect, useState } from "react";
 
-type UserProps = {
-    email: string,
-    token: string
-}
-
 type AuthContextProps = {
-    user: UserProps | null,
-    login: (user: UserProps) => void,
-    logout: () => void
+    user: UserAuthProps | null,
+    login: (token: string) => void,
+    logout: () => void,
+    setUserData: (userInfo: UserAuthProps) => void
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<UserProps | null>(null)
+    const [user, setUser] = useState<UserAuthProps | null>(null)
 
-    const login = (userInfo: UserProps) => {
-        setUser(userInfo)
-        setItem('user', JSON.stringify(userInfo))
-        setItem('access_token', userInfo.token)
+    const login = (token: string) => {
+        setItem('access_token', token)
     }
 
     const logout = () => {
-        console.log('deslogou')
+        removeItem('user')
+        removeItem('access_token')
+    }
+
+    const setUserData = (userInfo: UserAuthProps) => {
+        setItem('user', JSON.stringify(userInfo))
+        setUser(userInfo)
     }
 
     // Se tiver a informação do usuário no localStorage é setado
@@ -41,7 +42,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         <AuthContext.Provider value={{
             user,
             login,
-            logout
+            logout,
+            setUserData
         }}>
             {children}
         </AuthContext.Provider>

@@ -8,11 +8,13 @@ import { Label } from "@/components/ui/label"
 import { AuthContext } from "@/contexts/Auth"
 import { getAuthentication } from "@/services/auth"
 import { zodResolver } from '@hookform/resolvers/zod'
+import { head } from 'lodash'
 import { useRouter } from 'next/navigation'
 import { useContext, useState } from "react"
 import { useForm } from 'react-hook-form'
 
-// import { httpGet } from "@/services"
+import { httpGet } from "@/services"
+import { UserAuthProps } from "@/types/UserAuthProps"
 import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
@@ -31,17 +33,17 @@ export default function Login() {
         try {
             const authentication = await getAuthentication(data.email, data.password)
 
-            // const users = await httpGet('/users/getbyfilters', {
-            //     filters: JSON.stringify([
-            //         { PropertyName: 'email', Operation: 'equals', Value: authContext.user?.email }
-            //     ])
-            // })
+            authContext.login(authentication.accessToken)
 
-            console.log(users)
-            authContext.login({
-                email: data.email,
-                token: authentication.accessToken
+            const user = await httpGet('/users/getbyfilters', {
+                filters: JSON.stringify([
+                    { PropertyName: 'Email', Operation: 'Equals', Value: data.email }
+                ])
             })
+
+            const userAuth = head(user) as UserAuthProps
+            userAuth.token = authentication.accessToken;
+            authContext.setUserData(userAuth)
 
             router.push('/users')
         } catch (error) {
