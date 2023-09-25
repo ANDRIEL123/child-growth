@@ -5,5 +5,6 @@ export type UserAuthProps = {
     active: number,
     phone: string,
     birthDate: Date,
-    password: string
+    password: string,
+    avatar?: string
 }

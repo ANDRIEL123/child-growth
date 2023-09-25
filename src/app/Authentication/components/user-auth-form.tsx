@@ -2,6 +2,7 @@
 
 import * as React from "react"
 
+import UploadImage from "@/components/UploadImage"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,8 +19,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
-  const { register, handleSubmit, formState: {
+  const { register, control, handleSubmit, setError, formState: {
     errors
   } } = useForm<NewUserSchemaFormData>({
     resolver: zodResolver(newUserSchema)
@@ -28,10 +28,36 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(data: any) {
     setIsLoading(true)
 
-    try {
-      await httpPost('users', data)
+    // Lida com o envio da mensagem em base64
+    if (control._formValues.avatar) {
+      const file = control._formValues.avatar[0]
 
-      router.push('/login')
+      if (file) {
+        const reader = new FileReader()
+
+        reader.onload = async function (event) {
+          data.avatar = 'data:image/png;base64,' + (event.target?.result as string)?.split(',')[1]
+
+          await sendUser(data)
+        }
+
+        reader.readAsDataURL(file)
+      }
+    } else {
+      await sendUser(data)
+    }
+  }
+
+  async function sendUser(data: any) {
+    try {
+      if (data.password !== data.confirmPassword) {
+        setError('password', { message: 'As senhas não coincidem.' })
+        setError('confirmPassword', { message: 'As senhas não coincidem.' })
+      } else {
+        await httpPost('users', data)
+
+        router.push('/login')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -46,8 +72,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               Email
             </Label>
             <Input
-              id="email"
               placeholder="E-mail"
+              label="Informe o email"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
@@ -57,23 +83,45 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               {...register('email')}
             />
             <Input
-              id="password"
-              placeholder="Senha"
-              autoCapitalize="none"
-              type="password"
-              errorMessage={errors.password?.message}
-              autoCorrect="off"
-              disabled={isLoading}
-              {...register('password')}
-            />
-            <Input
-              id="name"
               placeholder="Nome"
               autoCapitalize="none"
+              label="Informe o nome"
               errorMessage={errors.name?.message}
               autoCorrect="off"
               disabled={isLoading}
               {...register('name')}
+            />
+            <Input
+              placeholder="Senha"
+              label="Informe a senha"
+              type="password"
+              errorMessage={errors.password?.message}
+              disabled={isLoading}
+              {...register('password')}
+            />
+            <Input
+              placeholder="Senha"
+              label="Confirme a senha"
+              type="password"
+              errorMessage={errors.confirmPassword?.message}
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register('confirmPassword')}
+            />
+            <Input
+              placeholder="Telefone"
+              label="Informe o telefone"
+              type="tel"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              errorMessage={errors.phone?.message}
+              disabled={isLoading}
+              {...register('phone')}
+            />
+            <UploadImage
+              errorMessage={errors.avatar?.message}
+              label="Selecione sua imagem de perfil"
+              disabled={isLoading}
+              register={register('avatar')}
             />
           </div>
           <Button disabled={isLoading}>

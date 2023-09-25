@@ -2,16 +2,22 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Warning } from '@mui/icons-material'
+import { Label } from "@radix-ui/react-label"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  errorMessage?: string
+  errorMessage?: string,
+  label?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, errorMessage, ...props }, ref) => {
+  ({ className, type, errorMessage, label, ...props }, ref) => {
     return (
       <div className="mb-2">
+        <Label className={cn(
+          "text-xs",
+          errorMessage ? "text-red-400" : null,
+        )}>{label}</Label>
         <input
           type={type}
           className={cn(
@@ -25,8 +31,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {
           errorMessage ? (
             <span className="flex items-center text-red-400 text-sm mt-1">
-              <Warning className="text-lg" />
-              <b className="ml-1.5">{errorMessage}</b>
+              <Warning style={{ fontSize: 18 }} />
+              <b className="ml-1.5 text-xs">{errorMessage}</b>
             </span>
           ) : null
         }

@@ -13,8 +13,10 @@ import { useRouter } from 'next/navigation'
 import { useContext, useState } from "react"
 import { useForm } from 'react-hook-form'
 
+import Logo, { Color } from "@/components/Logo"
 import { httpGet } from "@/services"
 import { UserAuthProps } from "@/types/UserAuthProps"
+import Link from "next/link"
 import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
@@ -56,7 +58,7 @@ export default function Login() {
     return (
         <div className="flex flex-col p-10">
             <div className="relative z-20 flex items-center text-lg font-medium">
-                Child Growth
+                <Logo color={Color.Dark} />
             </div>
             <div className="flex flex-col items-center justify-center mt-20">
                 <Label className="text-xl">Informe seus dados para acessar</Label>
@@ -69,6 +71,7 @@ export default function Login() {
                             <Input
                                 id="email"
                                 placeholder="E-mail"
+                                label="Informe o Email"
                                 autoCapitalize="none"
                                 autoComplete="email"
                                 autoCorrect="off"
@@ -79,6 +82,7 @@ export default function Login() {
                             <Input
                                 id="password"
                                 placeholder="Senha"
+                                label="Informe a senha"
                                 type="password"
                                 autoCapitalize="none"
                                 autoComplete="password"
@@ -94,6 +98,12 @@ export default function Login() {
                             )}
                             Entrar
                         </Button>
+                        <div className="flex justify-center">
+                            <span className="text-sm" >Não possuí uma conta?</span>
+                            <Link href="/" className="font-bold text-sm ml-1">
+                                Fazer cadastro
+                            </Link>
+                        </div>
                     </div>
                 </form>
             </div>

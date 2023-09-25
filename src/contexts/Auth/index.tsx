@@ -2,7 +2,9 @@
 
 import { removeItem, setItem } from "@/services/StorageService";
 import { UserAuthProps } from "@/types/UserAuthProps";
+import { useRouter } from "next/navigation";
 import React, { createContext, useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 
 type AuthContextProps = {
     user: UserAuthProps | null,
@@ -14,6 +16,7 @@ type AuthContextProps = {
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const router = useRouter()
     const [user, setUser] = useState<UserAuthProps | null>(null)
 
     const login = (token: string) => {
@@ -23,6 +26,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = () => {
         removeItem('user')
         removeItem('access_token')
+        setUser(null)
+
+        toast.info('Usuário desconectado.')
+        router.push('/login')
+
     }
 
     const setUserData = (userInfo: UserAuthProps) => {
