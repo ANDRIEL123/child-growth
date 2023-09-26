@@ -2,6 +2,7 @@
 
 import * as React from "react"
 
+import MaskInput from "@/components/InputMask"
 import UploadImage from "@/components/UploadImage"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -28,22 +29,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(data: any) {
     setIsLoading(true)
 
+    const file = control._formValues.avatar[0]
+
     // Lida com o envio da mensagem em base64
-    if (control._formValues.avatar) {
-      const file = control._formValues.avatar[0]
+    if (file) {
+      const reader = new FileReader()
 
-      if (file) {
-        const reader = new FileReader()
+      reader.onload = async function (event) {
+        data.avatar = 'data:image/png;base64,' + (event.target?.result as string)?.split(',')[1]
 
-        reader.onload = async function (event) {
-          data.avatar = 'data:image/png;base64,' + (event.target?.result as string)?.split(',')[1]
-
-          await sendUser(data)
-        }
-
-        reader.readAsDataURL(file)
+        await sendUser(data)
       }
+
+      reader.readAsDataURL(file)
     } else {
+      data.avatar = null
       await sendUser(data)
     }
   }
@@ -62,6 +62,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       setIsLoading(false)
     }
   }
+
+  console.log(control._formValues)
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -108,14 +110,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               {...register('confirmPassword')}
             />
-            <Input
+            <MaskInput
+              mask="(__) _____-_____"
+              replacement="_"
               placeholder="Telefone"
               label="Informe o telefone"
-              type="tel"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               errorMessage={errors.phone?.message}
               disabled={isLoading}
-              {...register('phone')}
+              register={register('phone')}
             />
             <UploadImage
               errorMessage={errors.avatar?.message}
