@@ -20,13 +20,10 @@ const UsersPage = () => {
         getUsers()
     }, [])
 
-    console.log()
-
     return (
         <>
-            <Header avatar={authContext.user?.avatar} />
+            <Header />
             <Suspense fallback={<p>Carregando...</p>}>
-                <h3>Bem vindo(a) {authContext.user?.name}</h3>
                 <DataTable columns={userColumns} data={users} />
             </Suspense>
         </>

@@ -22,7 +22,45 @@ const httpGet = async (endpoint: string, params?: object) => {
 
 const httpPost = async (endpoint: string, body: object) => {
     try {
-        const response = await api.post(endpoint, body)
+        const token = getItem('access_token')
+
+        const response = await api.post(endpoint, body, {
+            headers: {
+                Authorization: token
+            }
+        })
+
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
+const httpPut = async (endpoint: string, body: object) => {
+    try {
+        const token = getItem('access_token')
+
+        const response = await api.put(endpoint, body, {
+            headers: {
+                Authorization: token
+            }
+        })
+
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
+const httpDelete = async (endpoint: string, id: bigint) => {
+    try {
+        const token = getItem('access_token')
+
+        const response = await api.delete(`${endpoint}/${id}`, {
+            headers: {
+                Authorization: token
+            }
+        })
 
         return response
     } catch (error) {
@@ -31,7 +69,8 @@ const httpPost = async (endpoint: string, body: object) => {
 }
 
 export {
-    httpGet,
-    httpPost
+    httpDelete, httpGet,
+    httpPost,
+    httpPut
 }
 

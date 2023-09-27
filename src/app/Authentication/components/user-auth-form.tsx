@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import MaskInput from "@/components/InputMask"
-import UploadImage from "@/components/UploadImage"
+import UploadImageInput from "@/components/UploadImageInput"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,8 +63,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   }
 
-  console.log(control._formValues)
-
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -119,7 +117,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               register={register('phone')}
             />
-            <UploadImage
+            <UploadImageInput
               errorMessage={errors.avatar?.message}
               label="Selecione sua imagem de perfil"
               disabled={isLoading}

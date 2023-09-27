@@ -3,6 +3,7 @@ import {
     Settings
 } from "lucide-react"
 
+import { UserAuthForm } from "@/app/Authentication/components/user-auth-form"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,6 +13,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { AuthContext } from "@/contexts/Auth"
+import { useDialog } from "@/contexts/Dialog"
 import { Avatar } from "@mui/material"
 import { useContext } from "react"
 
@@ -21,6 +23,7 @@ type DropdownMenuAccountProps = {
 
 export function DropdownMenuMyAccount(props: DropdownMenuAccountProps) {
     const authContext = useContext(AuthContext)
+    const { openDialog } = useDialog()
 
     return (
         <DropdownMenu>
@@ -35,6 +38,7 @@ export function DropdownMenuMyAccount(props: DropdownMenuAccountProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="hover:cursor-pointer hover:bg-slate-200"
+                    onClick={() => openDialog(<UserAuthForm />)}
                 >
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Configurações</span>

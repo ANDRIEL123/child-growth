@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 
+import { DialogProvider } from '@/contexts/Dialog';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 
@@ -23,13 +24,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
-        <body className={inter.className}>
-          {children}
-          <ToastContainer
-            position="bottom-left"
-            theme="dark"
-          />
-        </body>
+        <DialogProvider>
+          <body className={inter.className}>
+            {children}
+            <ToastContainer
+              position="bottom-left"
+              theme="dark"
+            />
+          </body>
+        </DialogProvider>
       </AuthProvider>
     </html>
   )

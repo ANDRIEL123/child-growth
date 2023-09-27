@@ -2,7 +2,7 @@
 import { ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
 
-function UploadImage(props: any) {
+function UploadImageInput(props: any) {
     const [file, setFile] = useState<string>()
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -34,4 +34,4 @@ function UploadImage(props: any) {
     );
 }
 
-export default UploadImage
+export default UploadImageInput

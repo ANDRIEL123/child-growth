@@ -30,7 +30,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         toast.info('Usuário desconectado.')
         router.push('/login')
-
     }
 
     const setUserData = (userInfo: UserAuthProps) => {
@@ -44,7 +43,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (userFromStorage) {
             setUser(JSON.parse(userFromStorage));
         }
-    }, []);
+    }, [])
 
     return (
         <AuthContext.Provider value={{
