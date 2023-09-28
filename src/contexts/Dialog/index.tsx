@@ -5,24 +5,49 @@ import React, { ReactNode, createContext, useContext, useState } from 'react';
 
 interface DialogContextType {
     open: boolean
-    openDialog: (dialogContent: ReactNode, dialogProps?: DialogProps) => void
+    openDialog: (openDialogProps: OpenDialogProps) => void
     closeDialog: () => void
 }
-
-const DialogContext = createContext<DialogContextType | undefined>(undefined);
 
 interface DialogProviderProps {
     children: ReactNode
 }
 
+type OpenDialogProps = {
+    title: string,
+    dialogContent: ReactNode,
+    withButtonConfirm: boolean,
+    dialogProps?: DialogProps,
+    buttonConfirmText?: string,
+    onConfirm?: () => void
+}
+
+const defaultOpenDialogProps: OpenDialogProps = {
+    title: 'Título',
+    buttonConfirmText: 'Confirmar',
+    withButtonConfirm: true,
+    dialogContent: <>Conteúdo do Modal</>
+}
+
+const DialogContext = createContext<DialogContextType | undefined>(undefined);
+
 export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
     const [open, setOpen] = useState(false)
-    const [dialogContent, setDialogContent] = useState<ReactNode | null>(null)
-    const [dialogProps, setDialogProps] = useState<DialogProps | null>(null)
+    const [openDialogProps, setOpenDialogProps] = useState<OpenDialogProps | null>(null)
 
-    const openDialog = (content: ReactNode, props?: DialogProps) => {
-        setDialogContent(content)
-        setDialogProps(props || null)
+    const openDialog = (openDialogProps: OpenDialogProps) => {
+        setOpenDialogProps({
+            ...defaultOpenDialogProps,
+            ...openDialogProps,
+            onConfirm: () => {
+                if (openDialogProps.onConfirm) {
+                    openDialogProps.onConfirm()
+                }
+
+                closeDialog()
+            }
+        })
+
         setOpen(true)
     }
 
@@ -33,9 +58,9 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
     return (
         <DialogContext.Provider value={{ open, openDialog, closeDialog }}>
             {children}
-            <Dialog open={open} onClose={closeDialog} fullWidth  {...dialogProps}>
+            <Dialog open={open} onClose={closeDialog} fullWidth  {...openDialogProps?.dialogProps}>
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Modal title
+                    {openDialogProps?.title}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -50,22 +75,26 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    {dialogContent}
+                    {openDialogProps?.dialogContent}
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={closeDialog}>
-                        Salvar
-                    </Button>
+                    {openDialogProps?.withButtonConfirm ? (
+                        <Button autoFocus onClick={() => confirm}>
+                            {openDialogProps?.buttonConfirmText}
+                        </Button>
+                    ) : null}
                 </DialogActions>
             </Dialog>
         </DialogContext.Provider>
     )
 }
 
-export const useDialog = (): DialogContextType => {
+export const useDialogContext = (): DialogContextType => {
     const context = useContext(DialogContext)
+
     if (!context) {
-        throw new Error('useDialog must be used within a DialogProvider')
+        throw new Error('useDialogContext must be used within a DialogProvider')
     }
+
     return context
 }

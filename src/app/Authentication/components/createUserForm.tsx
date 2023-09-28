@@ -13,7 +13,7 @@ import { httpPost } from "@/services"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { NewUserSchemaFormData, newUserSchema } from "./schema"
+import { UserSchemaFormData, userSchema } from "./schema"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -22,8 +22,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { register, control, handleSubmit, setError, formState: {
     errors
-  } } = useForm<NewUserSchemaFormData>({
-    resolver: zodResolver(newUserSchema)
+  } } = useForm<UserSchemaFormData>({
+    resolver: zodResolver(userSchema)
   });
 
   async function onSubmit(data: any) {

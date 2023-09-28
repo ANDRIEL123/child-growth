@@ -5,12 +5,12 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { AuthContext } from "@/contexts/Auth"
+import { useAuthContext } from "@/contexts/Auth"
 import { getAuthentication } from "@/services/auth"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { head } from 'lodash'
 import { useRouter } from 'next/navigation'
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { useForm } from 'react-hook-form'
 
 import Logo, { Color } from "@/components/Logo"
@@ -21,7 +21,7 @@ import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
     const router = useRouter()
-    const authContext = useContext(AuthContext)
+    const authContext = useAuthContext()
     const { register, handleSubmit, formState: {
         errors
     } } = useForm<UserSchemaFormData>({

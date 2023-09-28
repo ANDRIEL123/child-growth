@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
 
 function UploadImageInput(props: any) {
-    const [file, setFile] = useState<string>()
+    const [file, setFile] = useState<string>(props.file ? props.file : '')
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         const selectedFile = e.target?.files?.[0]

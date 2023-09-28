@@ -3,7 +3,7 @@
 import { removeItem, setItem } from "@/services/StorageService";
 import { UserAuthProps } from "@/types/UserAuthProps";
 import { useRouter } from "next/navigation";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 
 type AuthContextProps = {
@@ -15,7 +15,7 @@ type AuthContextProps = {
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
     const [user, setUser] = useState<UserAuthProps | null>(null)
 
@@ -57,8 +57,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-export {
-    AuthContext,
-    AuthProvider
-};
+export const useAuthContext = () => {
+    const context = useContext(AuthContext)
 
+    if (!context) {
+        throw new Error('useAuthContext must be used within a AuthProvider')
+    }
+
+    return context
+}

@@ -1,11 +1,10 @@
-import { AuthContext } from "@/contexts/Auth"
-import { useContext } from "react"
+import { useAuthContext } from "@/contexts/Auth"
 import { DropdownMenuMyAccount } from "../DropdownMyAccount"
 import Logo from "../Logo"
 import { NavMenu } from "../NavMenu"
 
 const Header = () => {
-    const authContext = useContext(AuthContext)
+    const authContext = useAuthContext()
 
     return (
         <div className="h-1 flex items-center text-center justify-between bg-zinc-900 p-10">

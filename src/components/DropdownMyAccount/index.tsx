@@ -3,7 +3,7 @@ import {
     Settings
 } from "lucide-react"
 
-import { UserAuthForm } from "@/app/Authentication/components/user-auth-form"
+import { UserAuthForm } from "@/app/Authentication/components/updateUserForm"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,18 +12,17 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { AuthContext } from "@/contexts/Auth"
-import { useDialog } from "@/contexts/Dialog"
+import { useAuthContext } from "@/contexts/Auth"
+import { useDialogContext } from "@/contexts/Dialog"
 import { Avatar } from "@mui/material"
-import { useContext } from "react"
 
 type DropdownMenuAccountProps = {
     avatar?: string
 }
 
 export function DropdownMenuMyAccount(props: DropdownMenuAccountProps) {
-    const authContext = useContext(AuthContext)
-    const { openDialog } = useDialog()
+    const authContext = useAuthContext()
+    const { openDialog } = useDialogContext()
 
     return (
         <DropdownMenu>
@@ -38,7 +37,11 @@ export function DropdownMenuMyAccount(props: DropdownMenuAccountProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="hover:cursor-pointer hover:bg-slate-200"
-                    onClick={() => openDialog(<UserAuthForm />)}
+                    onClick={() => openDialog({
+                        title: 'Alteração de usuário',
+                        dialogContent: (<UserAuthForm />),
+                        withButtonConfirm: false
+                    })}
                 >
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Configurações</span>

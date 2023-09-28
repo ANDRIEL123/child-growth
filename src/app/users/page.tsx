@@ -2,13 +2,13 @@
 
 import { DataTable } from "@/components/DataTable";
 import Header from "@/components/Header";
-import { AuthContext } from "@/contexts/Auth";
+import { useAuthContext } from "@/contexts/Auth";
 import { httpGet } from "@/services";
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { userColumns } from "./userColumns";
 
 const UsersPage = () => {
-    const authContext = useContext(AuthContext)
+    const authContext = useAuthContext()
     const [users, setUsers] = useState([])
 
     const getUsers = async () => {

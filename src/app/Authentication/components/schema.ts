@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const newUserSchema = z.object({
+export const userSchema = z.object({
     email: z.string()
         .email({ message: "O email deve ser válido" }),
     password: z.string()
@@ -10,8 +10,9 @@ export const newUserSchema = z.object({
     name: z.string()
         .nonempty('O nome é obrigatório'),
     phone: z.string()
-        .optional(),
-    avatar: z.object({
+        .optional()
+        .nullable(),
+    avatar: z.union([z.string().optional(), z.object({
         FileList: z.object({
             File: z.object({
                 name: z.string(),
@@ -22,7 +23,7 @@ export const newUserSchema = z.object({
                 type: z.string()
             }).optional()
         }).optional()
-    }).optional()
+    }).optional()])
 })
 
-export type NewUserSchemaFormData = z.infer<typeof newUserSchema>
+export type UserSchemaFormData = z.infer<typeof userSchema>
