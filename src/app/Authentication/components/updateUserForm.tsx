@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuthContext } from "@/contexts/Auth"
+import { useDialogContext } from "@/contexts/Dialog"
 import { cn } from "@/lib/utils"
 import { httpGet, httpPut } from "@/services"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -20,9 +21,10 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { user } = useAuthContext()
-
+  const { closeDialog } = useDialogContext()
+  const [file, setFile] = React.useState('')
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { register, control, handleSubmit, setError, formState: {
+  const { register, control, handleSubmit, setError, setValue, formState: {
     errors
   } } = useForm<UserSchemaFormData>({
     resolver: zodResolver(userSchema)
@@ -32,7 +34,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     async function fetchData() {
       const userData = await httpGet('/users/getbyfilters', {
         filters: JSON.stringify([
-          { PropertyName: 'Email', Operation: 'Equals', Value: user?.email }
+          { PropertyName: 'Id', Operation: 'Equals', Value: user?.id }
         ])
       })
 
@@ -44,11 +46,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         }
 
         const ret = userSchema.parse(treatUserData)
+
+        setValue('id', ret.id)
+        setValue('name', ret.name)
+        setValue('email', ret.email)
+        setValue('avatar', ret.avatar)
+        setFile(initialUserData.avatar)
+        setValue('password', ret.password)
+        setValue('confirmPassword', ret.confirmPassword)
+        setValue('phone', ret.phone)
       }
     }
 
     fetchData()
-  }, [user?.email])
+  }, [])
 
   async function onSubmit(data: any) {
     setIsLoading(true)
@@ -56,7 +67,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const file = control._formValues.avatar[0]
 
     // Lida com o envio da mensagem em base64
-    if (file) {
+    if (file && file instanceof File) {
       const reader = new FileReader()
 
       reader.onload = async function (event) {
@@ -67,7 +78,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
       reader.readAsDataURL(file)
     } else {
-      data.avatar = null
       await sendUser(data)
     }
   }
@@ -79,14 +89,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setError('confirmPassword', { message: 'As senhas não coincidem.' })
       } else {
         await httpPut('users', data)
+
+        closeDialog()
       }
     } finally {
       setIsLoading(false)
     }
   }
-
-  console.log(control._formValues)
-  console.log(control._formState)
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -147,6 +156,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               label="Selecione sua imagem de perfil"
               disabled={isLoading}
               register={register('avatar')}
+              file={file}
             />
           </div>
           <Button disabled={isLoading}>

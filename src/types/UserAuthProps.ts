@@ -1,4 +1,5 @@
 export type UserAuthProps = {
+    id: bigint,
     name: string,
     email: string,
     token: string,

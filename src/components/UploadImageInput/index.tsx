@@ -28,7 +28,7 @@ function UploadImageInput(props: any) {
                 {...props.register}
                 onChange={onChange}
             />
-            <img src={file} />
+            <img src={file || props.file} />
         </div>
 
     );
