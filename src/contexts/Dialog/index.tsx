@@ -13,10 +13,10 @@ interface DialogProviderProps {
     children: ReactNode
 }
 
-type OpenDialogProps = {
+export type OpenDialogProps = {
     title: string,
     dialogContent: ReactNode,
-    withButtonConfirm: boolean,
+    withButtonConfirm?: boolean,
     dialogProps?: DialogProps,
     buttonConfirmText?: string,
     onConfirm?: () => void
@@ -40,6 +40,7 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
             ...defaultOpenDialogProps,
             ...openDialogProps,
             onConfirm: () => {
+                console.log(openDialogProps.onConfirm)
                 if (openDialogProps.onConfirm) {
                     openDialogProps.onConfirm()
                 }
@@ -79,7 +80,13 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                 </DialogContent>
                 <DialogActions>
                     {openDialogProps?.withButtonConfirm ? (
-                        <Button autoFocus onClick={() => confirm}>
+                        <Button
+                            autoFocus
+                            onClick={() => openDialogProps?.onConfirm ?
+                                openDialogProps?.onConfirm() :
+                                null
+                            }
+                        >
                             {openDialogProps?.buttonConfirmText}
                         </Button>
                     ) : null}
