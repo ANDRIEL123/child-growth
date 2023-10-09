@@ -47,7 +47,7 @@ export default function Login() {
             userAuth.token = authentication.accessToken;
             authContext.setUserData(userAuth)
 
-            router.push('/users')
+            router.push('/children')
         } catch (error) {
             throw error
         } finally {

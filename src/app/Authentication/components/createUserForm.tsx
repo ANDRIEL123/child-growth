@@ -113,6 +113,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               replacement="_"
               placeholder="Telefone"
               label="Informe o telefone"
+              type="tel"
               errorMessage={errors.phone?.message}
               disabled={isLoading}
               register={register('phone')}

@@ -6,7 +6,7 @@ import { Label } from "@radix-ui/react-label"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  errorMessage?: string,
+  errorMessage?: string | any,
   label?: string
 }
 

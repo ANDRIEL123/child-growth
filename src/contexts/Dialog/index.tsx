@@ -78,9 +78,10 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                 <DialogContent dividers>
                     {openDialogProps?.dialogContent}
                 </DialogContent>
-                <DialogActions>
-                    {openDialogProps?.withButtonConfirm ? (
+                {openDialogProps?.withButtonConfirm ? (
+                    <DialogActions>
                         <Button
+                            type='submit'
                             autoFocus
                             onClick={() => openDialogProps?.onConfirm ?
                                 openDialogProps?.onConfirm() :
@@ -89,8 +90,8 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                         >
                             {openDialogProps?.buttonConfirmText}
                         </Button>
-                    ) : null}
-                </DialogActions>
+                    </DialogActions>
+                ) : null}
             </Dialog>
         </DialogContext.Provider>
     )

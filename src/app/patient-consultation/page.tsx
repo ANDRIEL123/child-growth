@@ -15,10 +15,10 @@ const ChildrenPage = () => {
                 <DataTable
                     columns={columns}
                     searchFor="name"
-                    endpoint="/children"
+                    endpoint="/PatientConsultation"
                     form={Form}
                     schema={schema}
-                    dialogTitleKey="Criança"
+                    dialogTitleKey="Consulta"
                 />
             </Suspense>
         </>

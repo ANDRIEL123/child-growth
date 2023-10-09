@@ -1,12 +1,7 @@
 import { formatDate } from "@/utils/date"
 import { ColumnDef } from "@tanstack/react-table"
 
-type UserProps = {
-    name: string,
-    birthDate: Date
-}
-
-export const childrenColumns: ColumnDef<UserProps>[] = [
+export const columns: ColumnDef<any>[] = [
     {
         accessorKey: 'name',
         header: 'Nome'
