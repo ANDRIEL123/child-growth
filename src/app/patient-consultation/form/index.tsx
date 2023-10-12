@@ -1,11 +1,22 @@
+'use client'
+
 import { Input } from '@/components/ui/input';
 import { FormChildrenProps } from '@/types/FormChildrenProps';
+import { useSearchParams } from 'next/navigation';
 
 function Form(props: FormChildrenProps) {
+    const { get } = useSearchParams();
+    const childrenId = get('id')
+
     const {
         errors,
-        register
+        register,
+        setValue
     } = props
+
+    if (childrenId) {
+        setValue('childrenId', childrenId)
+    }
 
     return (
         <>
@@ -13,6 +24,7 @@ function Form(props: FormChildrenProps) {
                 placeholder="Altura"
                 label="Informe a altura"
                 type='number'
+                step="0.01"
                 errorMessage={errors.height?.message}
                 {...register('height')}
             />
@@ -20,6 +32,7 @@ function Form(props: FormChildrenProps) {
                 placeholder="Peso"
                 label="Informe o peso"
                 type='number'
+                step="0.01"
                 errorMessage={errors.weight?.message}
                 {...register('weight')}
             />
@@ -27,6 +40,7 @@ function Form(props: FormChildrenProps) {
                 placeholder="Perímetro Cefálico"
                 label="Informe o perímetro cefálico"
                 type='number'
+                step="0.01"
                 errorMessage={errors.cephalicPerimeter?.message}
                 {...register('cephalicPerimeter')}
             />
@@ -42,12 +56,6 @@ function Form(props: FormChildrenProps) {
                 label='Informe a data da consulta'
                 errorMessage={errors.date?.message}
                 {...register('date')}
-            />
-            <Input
-                placeholder="Criança"
-                label="Informe a criança"
-                errorMessage={errors.childrenId?.message}
-                {...register('children_id')}
             />
         </>
     )

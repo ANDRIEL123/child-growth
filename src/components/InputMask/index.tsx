@@ -4,15 +4,19 @@ import { Input, InputProps } from "../ui/input"
 
 type MaskInputProps = {
     mask?: string,
-    replacement?: string,
+    replacement?: any,
     register: UseFormRegisterReturn<any>
 } & InputProps
 
 function MaskInput(props: MaskInputProps) {
     return (
-        <InputMask<typeof Input>
+        <InputMask
             component={Input}
-            {...props}
+            label={props.label}
+            errorMessage={props.errorMessage}
+            mask={props.mask}
+            placeholder={props.placeholder}
+            replacement={props.replacement}
             {...props.register}
         />
     )

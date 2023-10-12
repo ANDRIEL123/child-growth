@@ -6,6 +6,7 @@ export const populateFormOnOpen = (
     schema: Zod.ZodObject<any>,
     data: any
 ) => {
+    console.log(data)
     for (let key in schema.shape) {
         let value = get(data, key)
 
@@ -18,8 +19,8 @@ export const populateFormOnOpen = (
 }
 
 function isDateValid(dateString: string) {
-    const date = new Date(dateString);
-    return !isNaN(date.getTime());
+    const date = new Date(dateString)
+    return (!isNaN(date.getTime()) && date.getFullYear() > 1969)
 }
 
 function formatDate(dataString: string) {

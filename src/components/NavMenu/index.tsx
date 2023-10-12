@@ -17,6 +17,11 @@ const menus: { title: string; href: string; description: string }[] = [
         title: "Login",
         href: "/login",
         description: "Login do usuário",
+    },
+    {
+        title: "Crianças",
+        href: "/children",
+        description: "Gerenciamento de Crianças",
     }
 ]
 

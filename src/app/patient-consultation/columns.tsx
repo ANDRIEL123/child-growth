@@ -8,7 +8,7 @@ export const columns: ColumnDef<any>[] = [
         cell: ({ row }) => {
             return (
                 <div>
-                    {formatDate(row.getValue("birthDate"))}
+                    {formatDate(row.getValue("date"))}
                 </div>
             )
         }
@@ -22,7 +22,7 @@ export const columns: ColumnDef<any>[] = [
         header: 'Peso'
     },
     {
-        accessorKey: 'cephalic_perimeter',
+        accessorKey: 'cephalicPerimeter',
         header: 'Perímetro Cefálico'
     }
 ]

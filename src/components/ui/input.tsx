@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Warning } from '@mui/icons-material'
-import { Label } from "@radix-ui/react-label"
+import { Label } from "@radix-ui/react-menubar"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

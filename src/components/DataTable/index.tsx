@@ -38,8 +38,10 @@ import {
 import { OpenDialogProps, useDialogContext } from "@/contexts/Dialog";
 import { httpDelete, httpGet, httpPost, httpPut } from "@/services";
 import { FormChildrenProps } from "@/types/FormChildrenProps";
-import { Add, Delete, Edit } from '@mui/icons-material';
+import { Add, Delete, Edit, ManageHistory } from '@mui/icons-material';
 import { Tooltip } from "@mui/material";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { useRouter } from 'next/navigation';
 import Form from "../Form";
 import { Checkbox } from "../ui/checkbox";
 
@@ -49,7 +51,10 @@ type DataTableProps = {
     endpoint: string,
     form: (props: FormChildrenProps) => JSX.Element,
     schema: z.ZodObject<any>,
-    dialogTitleKey?: string
+    dialogTitleKey?: string,
+    withManage?: boolean,
+    endpointGet?: string,
+    endpointGetParams?: any
 }
 
 const columnsBase: ColumnDef<any>[] = [
@@ -82,7 +87,9 @@ const getColumnsActions = (
         Promise<QueryObserverResult<any, unknown>>,
     form: (props: FormChildrenProps) => JSX.Element,
     schema: z.ZodObject<any>,
-    closeDialog: () => void
+    closeDialog: () => void,
+    router: AppRouterInstance,
+    withManage?: boolean
 ) => {
     const FormContainer = form
 
@@ -106,6 +113,7 @@ const getColumnsActions = (
                                             onSubmit={async (data) => {
                                                 await httpPut(endpoint, data)
                                                 closeDialog()
+                                                refetch()
                                             }}
                                             createMode={false}
                                             item={row.original}
@@ -128,6 +136,18 @@ const getColumnsActions = (
                                 })}
                             />
                         </Tooltip>
+                        {
+                            withManage ? (
+                                <Tooltip title="Gerenciar">
+                                    <ManageHistory
+                                        className="hover:cursor-pointer ml-4"
+                                        onClick={() => {
+                                            router.push(`patient-consultation?id=${id}`)
+                                        }}
+                                    />
+                                </Tooltip>
+                            ) : null
+                        }
                     </>
                 )
             }
@@ -139,6 +159,7 @@ const getColumnsActions = (
 
 export function DataTable(props: DataTableProps) {
     const { openDialog, closeDialog } = useDialogContext()
+    const router = useRouter()
 
     const {
         columns: newColumns,
@@ -146,12 +167,15 @@ export function DataTable(props: DataTableProps) {
         endpoint,
         form: FormContainer,
         schema,
-        dialogTitleKey
+        dialogTitleKey,
+        withManage,
+        endpointGet,
+        endpointGetParams
     } = props
 
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['data'],
-        queryFn: async () => await httpGet(endpoint)
+        queryFn: async () => await httpGet(endpointGet ? endpointGet : endpoint, endpointGetParams)
     })
 
     const columns = [
@@ -163,7 +187,9 @@ export function DataTable(props: DataTableProps) {
             refetch,
             FormContainer,
             schema,
-            closeDialog
+            closeDialog,
+            router,
+            withManage
         )
     ]
 
@@ -176,7 +202,7 @@ export function DataTable(props: DataTableProps) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data: data?.content,
+        data: data?.content ? data.content : data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -201,6 +227,7 @@ export function DataTable(props: DataTableProps) {
     // Submit do formulário
     const submitCreate = async (data: any) => {
         await httpPost(endpoint, data)
+        refetch()
         closeDialog()
     }
 
@@ -208,23 +235,25 @@ export function DataTable(props: DataTableProps) {
         <div className="w-full p-5">
             <div className="flex items-center py-4">
                 <div className="flex items-center">
-                    <Add
-                        className="text-3xl hover:cursor-pointer"
-                        onClick={() => {
-                            openDialog({
-                                dialogContent: (
-                                    <Form
-                                        formComponent={FormContainer}
-                                        schema={schema}
-                                        onSubmit={submitCreate}
-                                        createMode
-                                    />
-                                ),
-                                title: `Cadastro de ${dialogTitleKey}`,
-                                withButtonConfirm: false
-                            })
-                        }}
-                    />
+                    <Tooltip title="Novo registro">
+                        <Add
+                            className="text-3xl hover:cursor-pointer"
+                            onClick={() => {
+                                openDialog({
+                                    dialogContent: (
+                                        <Form
+                                            formComponent={FormContainer}
+                                            schema={schema}
+                                            onSubmit={submitCreate}
+                                            createMode
+                                        />
+                                    ),
+                                    title: `Cadastro de ${dialogTitleKey}`,
+                                    withButtonConfirm: false
+                                })
+                            }}
+                        />
+                    </Tooltip>
                     <Input
                         placeholder="Pesquise..."
                         value={(table.getColumn(searchFor)?.getFilterValue() as string) ?? ""}
@@ -250,7 +279,7 @@ export function DataTable(props: DataTableProps) {
                                         key={column.id}
                                         className="capitalize"
                                         checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
+                                        onCheckedChange={(value: any) =>
                                             column.toggleVisibility(!!value)
                                         }
                                     >

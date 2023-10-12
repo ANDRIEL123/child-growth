@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 export const schema = z.object({
-    date: z.string(),
+    id: z.number().optional(),
+    date: z.string()
+        .nonempty('A data da consulta é obrigatória'),
     height: z.string()
         .nonempty("A altura é obrigatória"),
     weight: z.string()

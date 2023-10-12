@@ -13,17 +13,16 @@ const ChildrenPage = () => {
         <>
             <Header />
             <Typography className="ml-5 mt-5 text-2xl text-center">
-                {'Gerenciamento de Crianças'}
+                {'Gerenciamento de Responsáveis '}
             </Typography>
             <Suspense fallback={<p>Carregando...</p>}>
                 <DataTable
                     columns={columns}
                     searchFor="name"
-                    endpoint="/children"
+                    endpoint="/responsible"
                     form={Form}
                     schema={schema}
-                    dialogTitleKey="Criança"
-                    withManage
+                    dialogTitleKey="Responsável"
                 />
             </Suspense>
         </>

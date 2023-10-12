@@ -23,7 +23,7 @@ function Form(props: FormBaseProps) {
         item
     } = props
 
-    const { register, handleSubmit, setValue, formState: {
+    const { register, handleSubmit, control, setValue, formState: {
         errors
     } } = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema)
@@ -51,7 +51,7 @@ function Form(props: FormBaseProps) {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormComponent {...childrenFormProps} />
-            <Button className='float-right mt-1'>
+            <Button className='float-right mt-5'>
                 Confirmar
             </Button>
         </form>
