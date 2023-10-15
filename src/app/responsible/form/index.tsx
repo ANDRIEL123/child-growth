@@ -27,16 +27,16 @@ function Form(props: FormChildrenProps) {
                 {...register('email')}
             />
             <MaskInput
-                mask="(99) 99999-9999"
-                replacement={{ 9: /\d/ }}
+                mask="(__) _____-____"
+                replacement={{ _: /\d/ }}
                 placeholder="Telefone"
                 label="Informe o telefone"
                 errorMessage={errors.phone?.message}
                 register={register('phone')}
             />
             <MaskInput
-                mask="999.999.999-99"
-                replacement={{ 9: /\d/ }}
+                mask="___.___.___-__"
+                replacement={{ _: /\d/ }}
                 placeholder="CPF"
                 label="Informe o CPF"
                 type="tel"

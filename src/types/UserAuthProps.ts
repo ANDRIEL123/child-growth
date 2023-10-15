@@ -7,5 +7,6 @@ export type UserAuthProps = {
     phone: string,
     birthDate: Date,
     password: string,
-    avatar?: string
+    avatar?: string,
+    type: number
 }

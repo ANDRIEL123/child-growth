@@ -6,10 +6,9 @@ function Form(props: FormChildrenProps) {
     const {
         errors,
         register,
-        setValue
+        setValue,
+        item
     } = props
-
-    console.log(setValue)
 
     return (
         <>
@@ -32,6 +31,7 @@ function Form(props: FormChildrenProps) {
                 register={register('responsibleId')}
                 errorMessage={errors.responsibleId?.message}
                 setValue={setValue}
+                item={item}
             />
         </>
     )

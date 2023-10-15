@@ -109,8 +109,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               {...register('confirmPassword')}
             />
             <MaskInput
-              mask="(__) _____-_____"
-              replacement="_"
+              mask="(__) _____-____"
+              replacement={{ _: /\d/ }}
               placeholder="Telefone"
               label="Informe o telefone"
               type="tel"

@@ -6,7 +6,6 @@ export const populateFormOnOpen = (
     schema: Zod.ZodObject<any>,
     data: any
 ) => {
-    console.log(data)
     for (let key in schema.shape) {
         let value = get(data, key)
 

@@ -22,7 +22,7 @@ function Form(props: FormChildrenProps) {
         <>
             <Input
                 placeholder="Altura"
-                label="Informe a altura"
+                label="Informe a altura em Centímetros"
                 type='number'
                 step="0.01"
                 errorMessage={errors.height?.message}
@@ -30,14 +30,14 @@ function Form(props: FormChildrenProps) {
             />
             <Input
                 placeholder="Peso"
-                label="Informe o peso"
+                label="Informe o peso em Kilos"
                 type='number'
                 step="0.01"
                 errorMessage={errors.weight?.message}
                 {...register('weight')}
             />
             <Input
-                placeholder="Perímetro Cefálico"
+                placeholder="Perímetro Cefálico em Centímetros"
                 label="Informe o perímetro cefálico"
                 type='number'
                 step="0.01"

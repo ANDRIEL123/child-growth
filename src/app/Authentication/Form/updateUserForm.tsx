@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import MaskInput from "@/components/InputMask"
+import { SelectInput } from "@/components/SelectInput"
 import UploadImageInput from "@/components/UploadImageInput"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -23,7 +24,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { user } = useAuthContext()
   const { closeDialog } = useDialogContext()
   const [file, setFile] = React.useState('')
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(true)
   const { register, control, handleSubmit, setError, setValue, formState: {
     errors
   } } = useForm<UserSchemaFormData>({
@@ -32,7 +33,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   React.useEffect(() => {
     async function fetchData() {
-      const userData = await httpGet('/users/getbyfilters', {
+      setIsLoading(true)
+      const userData = await httpGet('/Users/GetByFilters', {
         filters: JSON.stringify([
           { PropertyName: 'Id', Operation: 'Equals', Value: user?.id }
         ])
@@ -55,7 +57,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setValue('password', ret.password)
         setValue('confirmPassword', ret.confirmPassword)
         setValue('phone', ret.phone)
+        setValue('type', ret.type)
       }
+
+      setIsLoading(false)
     }
 
     fetchData()
@@ -144,12 +149,24 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
             <MaskInput
               mask="(__) _____-_____"
-              replacement="_"
+              replacement={{ _: /\d/ }}
               placeholder="Telefone"
               label="Informe o telefone"
               errorMessage={errors.phone?.message}
               disabled={isLoading}
               register={register('phone')}
+            />
+            <SelectInput
+              label="Selecione um Tipo de Usuário"
+              options={[
+                { label: 'Pediatra', value: 0 },
+                { label: 'Responsável', value: 1 }
+              ]}
+              register={register('type')}
+              initialValue={control._formValues.type}
+              errorMessage={errors.type?.message}
+              loading={isLoading}
+              disabled
             />
             <UploadImageInput
               errorMessage={errors.avatar?.message}

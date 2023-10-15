@@ -14,14 +14,14 @@ import * as React from "react"
 
 const menus: { title: string; href: string; description: string }[] = [
     {
-        title: "Login",
-        href: "/login",
-        description: "Login do usuário",
+        title: "Pacientes",
+        href: "/children",
+        description: "Gerenciamento de Pacientes",
     },
     {
-        title: "Crianças",
-        href: "/children",
-        description: "Gerenciamento de Crianças",
+        title: "Responsáveis",
+        href: "/responsible",
+        description: "Cadastro de Responsáveis",
     }
 ]
 

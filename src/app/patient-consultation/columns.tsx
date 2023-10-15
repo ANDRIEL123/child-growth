@@ -15,14 +15,14 @@ export const columns: ColumnDef<any>[] = [
     },
     {
         accessorKey: 'height',
-        header: 'Altura'
+        header: 'Altura (Centímetros)'
     },
     {
         accessorKey: 'weight',
-        header: 'Peso'
+        header: 'Peso (Kilos)'
     },
     {
         accessorKey: 'cephalicPerimeter',
-        header: 'Perímetro Cefálico'
+        header: 'Perímetro Cefálico (Centímetros)'
     }
 ]

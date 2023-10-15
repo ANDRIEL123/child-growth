@@ -5,30 +5,35 @@ import Header from "@/components/Header"
 import { httpGet } from "@/services"
 import { Typography } from "@mui/material"
 import { head } from "lodash"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
 import { columns } from "./columns"
 import Form from "./form"
 import { schema } from './form/schema'
 
-const ChildrenPage = () => {
+const PatientConsultationPage = () => {
     const { get } = useSearchParams();
+    const router = useRouter()
     const [patient, setPatient] = useState<any>(null)
     const childrenId = get('id')
 
+    async function fetchData() {
+        const patientData = await httpGet('/children/getbyfilters', {
+            filters: JSON.stringify([
+                { PropertyName: 'Id', Operation: 'Equals', Value: childrenId }
+            ])
+        })
+
+        setPatient(head(patientData))
+    }
+
     useEffect(() => {
-        async function fetchData() {
-            const patientData = await httpGet('/children/getbyfilters', {
-                filters: JSON.stringify([
-                    { PropertyName: 'Id', Operation: 'Equals', Value: childrenId }
-                ])
-            })
-
-            setPatient(head(patientData))
+        if (childrenId) {
+            fetchData()
+        } else {
+            router.push('/children')
         }
-
-        fetchData()
-    }, [childrenId])
+    }, [])
 
     return (
         <>
@@ -59,4 +64,4 @@ const ChildrenPage = () => {
     )
 }
 
-export default ChildrenPage
+export default PatientConsultationPage

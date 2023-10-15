@@ -47,7 +47,11 @@ export default function Login() {
             userAuth.token = authentication.accessToken;
             authContext.setUserData(userAuth)
 
-            router.push('/children')
+            if (userAuth.type === 0) {
+                router.push('/children')
+            } else {
+                router.push(`/client/consults?userId=${userAuth.id}`)
+            }
         } catch (error) {
             throw error
         } finally {

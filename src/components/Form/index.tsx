@@ -23,7 +23,7 @@ function Form(props: FormBaseProps) {
         item
     } = props
 
-    const { register, handleSubmit, control, setValue, formState: {
+    const { register, handleSubmit, setValue, formState: {
         errors
     } } = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema)

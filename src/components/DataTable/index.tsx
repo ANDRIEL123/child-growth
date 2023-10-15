@@ -38,9 +38,8 @@ import {
 import { OpenDialogProps, useDialogContext } from "@/contexts/Dialog";
 import { httpDelete, httpGet, httpPost, httpPut } from "@/services";
 import { FormChildrenProps } from "@/types/FormChildrenProps";
-import { Add, Delete, Edit, ManageHistory } from '@mui/icons-material';
+import { Add, Delete, Edit } from '@mui/icons-material';
 import { Tooltip } from "@mui/material";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { useRouter } from 'next/navigation';
 import Form from "../Form";
 import { Checkbox } from "../ui/checkbox";
@@ -50,6 +49,7 @@ type DataTableProps = {
     searchFor: string,
     endpoint: string,
     form: (props: FormChildrenProps) => JSX.Element,
+    customActionsComponent?: (props: any) => JSX.Element,
     schema: z.ZodObject<any>,
     dialogTitleKey?: string,
     withManage?: boolean,
@@ -88,10 +88,12 @@ const getColumnsActions = (
     form: (props: FormChildrenProps) => JSX.Element,
     schema: z.ZodObject<any>,
     closeDialog: () => void,
-    router: AppRouterInstance,
-    withManage?: boolean
+    customActionsComponent?: (props: any) => JSX.Element,
 ) => {
     const FormContainer = form
+    const CustomActionsComponent = customActionsComponent
+
+    console.log(customActionsComponent)
 
     const columnsActions: ColumnDef<any>[] = [
         {
@@ -137,15 +139,8 @@ const getColumnsActions = (
                             />
                         </Tooltip>
                         {
-                            withManage ? (
-                                <Tooltip title="Gerenciar">
-                                    <ManageHistory
-                                        className="hover:cursor-pointer ml-4"
-                                        onClick={() => {
-                                            router.push(`patient-consultation?id=${id}`)
-                                        }}
-                                    />
-                                </Tooltip>
+                            CustomActionsComponent ? (
+                                <CustomActionsComponent item={row.original} />
                             ) : null
                         }
                     </>
@@ -166,12 +161,15 @@ export function DataTable(props: DataTableProps) {
         searchFor,
         endpoint,
         form: FormContainer,
+        customActionsComponent,
         schema,
         dialogTitleKey,
         withManage,
         endpointGet,
         endpointGetParams
     } = props
+
+    console.log(customActionsComponent)
 
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['data'],
@@ -188,8 +186,7 @@ export function DataTable(props: DataTableProps) {
             FormContainer,
             schema,
             closeDialog,
-            router,
-            withManage
+            customActionsComponent
         )
     ]
 

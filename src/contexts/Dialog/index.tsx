@@ -40,7 +40,6 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
             ...defaultOpenDialogProps,
             ...openDialogProps,
             onConfirm: () => {
-                console.log(openDialogProps.onConfirm)
                 if (openDialogProps.onConfirm) {
                     openDialogProps.onConfirm()
                 }

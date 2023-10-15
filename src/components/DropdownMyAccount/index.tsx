@@ -3,7 +3,7 @@ import {
     Settings
 } from "lucide-react"
 
-import { UserAuthForm } from "@/app/Authentication/components/updateUserForm"
+import { UserAuthForm } from "@/app/Authentication/Form/updateUserForm"
 import {
     DropdownMenu,
     DropdownMenuContent,
