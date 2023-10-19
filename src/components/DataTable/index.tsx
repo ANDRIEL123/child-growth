@@ -93,8 +93,6 @@ const getColumnsActions = (
     const FormContainer = form
     const CustomActionsComponent = customActionsComponent
 
-    console.log(customActionsComponent)
-
     const columnsActions: ColumnDef<any>[] = [
         {
             id: "actions",
@@ -164,12 +162,9 @@ export function DataTable(props: DataTableProps) {
         customActionsComponent,
         schema,
         dialogTitleKey,
-        withManage,
         endpointGet,
         endpointGetParams
     } = props
-
-    console.log(customActionsComponent)
 
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['data'],

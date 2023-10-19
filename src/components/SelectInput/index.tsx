@@ -31,8 +31,6 @@ export function SelectInput(props: SelectInputProps) {
         return null
     }
 
-    console.log(initialValue)
-
     return (
         <>
             <FormControl fullWidth size='small'>

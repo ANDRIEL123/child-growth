@@ -16,6 +16,7 @@ interface DialogProviderProps {
 export type OpenDialogProps = {
     title: string,
     dialogContent: ReactNode,
+    dialogContentProps?: any,
     withButtonConfirm?: boolean,
     dialogProps?: DialogProps,
     buttonConfirmText?: string,
@@ -92,7 +93,7 @@ export const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
                     </DialogActions>
                 ) : null}
             </Dialog>
-        </DialogContext.Provider>
+        </DialogContext.Provider >
     )
 }
 
