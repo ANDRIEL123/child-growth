@@ -16,7 +16,9 @@ api.interceptors.response.use(
         return response
     },
     (error) => {
-        const message = error.response.data.message ?? 'Ocorreu algum erro.'
+        const message = error.response.data.message ??
+            error.response.data?.split('\r')[0] ??
+            'Ocorreu algum erro.'
 
         switch (error.response.status) {
             case 401:

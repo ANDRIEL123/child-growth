@@ -12,5 +12,12 @@ export const schema = z.object({
         }),
         z.string()
             .nonempty('O responsável é obrigatório')
-    ])
+    ]),
+    gender: z.union([
+        z.number({
+            required_error: 'O gênero é obrigatório'
+        }),
+        z.string()
+            .nonempty('O gênero é obrigatório')
+    ]),
 });

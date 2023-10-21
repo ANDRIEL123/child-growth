@@ -9,10 +9,10 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 type SelectInputProps = {
     options: OptionProps[],
     label: string,
-    errorMessage?: string,
+    errorMessage: any,
     initialValue?: string | number,
     register: UseFormRegisterReturn<any>,
-    loading: boolean,
+    loading?: boolean,
     disabled?: boolean
 }
 
@@ -31,8 +31,10 @@ export function SelectInput(props: SelectInputProps) {
         return null
     }
 
+    console.log(initialValue)
+
     return (
-        <>
+        <div className='mt-4 mb-4'>
             <FormControl fullWidth size='small'>
                 <InputLabel>{label}</InputLabel>
                 <Select
@@ -58,6 +60,6 @@ export function SelectInput(props: SelectInputProps) {
                     </span>
                 ) : null
             }
-        </>
+        </div>
     )
 }

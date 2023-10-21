@@ -1,8 +1,8 @@
 import { useDialogContext } from "@/contexts/Dialog";
-import { AutoGraph, ManageHistory } from "@mui/icons-material";
+import { AutoGraph, ManageHistory, QueryStats } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import { useRouter } from 'next/navigation';
-import { LineChartAverageWeight } from "./charts/averageWeightLineChart";
+import { AverageLineChart } from "./charts/averageLineChart";
 import { LineChartComparative } from "./charts/comparativeLineChart";
 
 type CustomActionsProps = {
@@ -10,6 +10,7 @@ type CustomActionsProps = {
 }
 
 function CustomActions(props: CustomActionsProps) {
+    const { item } = props
     const { openDialog } = useDialogContext()
     const router = useRouter()
 
@@ -19,7 +20,7 @@ function CustomActions(props: CustomActionsProps) {
                 <ManageHistory
                     className="hover:cursor-pointer ml-4"
                     onClick={() => {
-                        router.push(`patient-consultation?id=${props.item.id}`)
+                        router.push(`patient-consultation?id=${item.id}`)
                     }}
                 />
             </Tooltip>
@@ -30,7 +31,7 @@ function CustomActions(props: CustomActionsProps) {
                         openDialog({
                             title: 'Resumo das últimas consultas',
                             dialogContent: <LineChartComparative
-                                childrenId={props.item.id}
+                                childrenId={item.id}
                             />,
                             withButtonConfirm: false
                         })
@@ -38,13 +39,13 @@ function CustomActions(props: CustomActionsProps) {
                 />
             </Tooltip>
             <Tooltip title="Visualizar Gráficos comparativos com percentil médio P50">
-                <AutoGraph
+                <QueryStats
                     className="hover:cursor-pointer ml-4"
                     onClick={() => {
                         openDialog({
                             title: 'Gráficos comparativos com percentil médio P50',
-                            dialogContent: <LineChartAverageWeight
-                                childrenId={props.item.id}
+                            dialogContent: <AverageLineChart
+                                childrenId={item.id}
                             />,
                             withButtonConfirm: false
                         })

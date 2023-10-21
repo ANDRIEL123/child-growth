@@ -28,11 +28,13 @@ function ComboBoxInput(props: ComboBoxProps) {
     } = props
 
     const [options, setOptions] = useState<any>([])
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         async function fetchData() {
             const { content } = await httpGet(`${endpoint}/GetOptions`)
             setOptions(content)
+            setLoading(false)
         }
 
         fetchData()
@@ -45,9 +47,9 @@ function ComboBoxInput(props: ComboBoxProps) {
         }
     }
 
-    if (options.length > 0 || !item) {
+    if (!loading) {
         return (
-            <>
+            <div className='mt-4 mb-4'>
                 <Label className={cn(
                     "text-xs",
                     errorMessage ? "text-red-400" : null,
@@ -86,7 +88,7 @@ function ComboBoxInput(props: ComboBoxProps) {
                         </span>
                     ) : null
                 }
-            </>
+            </div>
         )
     }
 

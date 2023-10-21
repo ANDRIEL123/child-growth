@@ -4,7 +4,7 @@ import { get } from "lodash"
 import { useEffect, useState } from "react"
 import { LineChartAverageProps } from "./averageLineChart"
 
-export function LineChartAverageWeight(props: LineChartAverageProps) {
+export function LineChartAverageHeight(props: LineChartAverageProps) {
     const [data, setData] = useState<any[]>([])
     const {
         childrenId
@@ -14,10 +14,10 @@ export function LineChartAverageWeight(props: LineChartAverageProps) {
         async function fetchData() {
             const response = await httpGet('PatientConsultation/GetComparativeAveragePercentile', {
                 childrenId,
-                chartType: 0
+                chartType: 1
             }) as any[]
 
-            let finalData = [['Competência', 'Média P50', 'Peso']] as any[]
+            let finalData = [['Competência', 'Média P50', 'Altura']] as any[]
 
             response.map(item => {
                 let element = []
@@ -41,7 +41,7 @@ export function LineChartAverageWeight(props: LineChartAverageProps) {
         <LineChart
             data={data}
             options={{
-                title: 'Peso',
+                title: 'Altura',
                 curveType: "function",
                 legend: { position: 'bottom' }
             }}

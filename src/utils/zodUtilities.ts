@@ -9,7 +9,7 @@ export const populateFormOnOpen = (
     for (let key in schema.shape) {
         let value = get(data, key)
 
-        if (isDateValid(value)) {
+        if (isValidDateFormat(value)) {
             value = formatDate(value)
         }
 
@@ -17,13 +17,13 @@ export const populateFormOnOpen = (
     }
 }
 
-function isDateValid(dateString: string) {
-    const date = new Date(dateString)
-    return (!isNaN(date.getTime()) && date.getFullYear() > 1969)
+function isValidDateFormat(dateString: string) {
+    const regex = /^\d{4}-\d{2}-\d{2}T00:00:00$/;
+    return regex.test(dateString);
 }
 
-function formatDate(dataString: string) {
-    const date = new Date(dataString)
+function formatDate(dateString: string) {
+    const date = new Date(dateString)
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
