@@ -1,23 +1,25 @@
-import { LineChart } from "@/components/Charts/LineChart"
+import { BarChart } from "@/components/Charts/BarChart"
 import { httpGet } from "@/services"
 import { get } from "lodash"
 import { useEffect, useState } from "react"
-import { LineChartAverageProps } from "./averageLineChart"
+import { LineChartAverageProps } from "./barChartAverageContainer"
 
-export function LineChartAverageHeight(props: LineChartAverageProps) {
+export function LineChartAverage(props: LineChartAverageProps) {
     const [data, setData] = useState<any[]>([])
     const {
-        childrenId
+        childrenId,
+        alias,
+        chartType
     } = props
 
     useEffect(() => {
         async function fetchData() {
             const response = await httpGet('PatientConsultation/GetComparativeAveragePercentile', {
                 childrenId,
-                chartType: 1
+                chartType
             }) as any[]
 
-            let finalData = [['Competência', 'Média P50', 'Altura']] as any[]
+            let finalData = [['Competência', 'Média P50', alias]] as any[]
 
             response.map(item => {
                 let element = []
@@ -38,12 +40,10 @@ export function LineChartAverageHeight(props: LineChartAverageProps) {
 
 
     return (
-        <LineChart
+        <BarChart
             data={data}
             options={{
-                title: 'Altura',
-                curveType: "function",
-                legend: { position: 'bottom' }
+                title: alias
             }}
         />
     )

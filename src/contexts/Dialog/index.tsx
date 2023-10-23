@@ -18,9 +18,13 @@ export type OpenDialogProps = {
     dialogContent: ReactNode,
     dialogContentProps?: any,
     withButtonConfirm?: boolean,
-    dialogProps?: DialogProps,
+    dialogProps?: MyDialogProps,
     buttonConfirmText?: string,
     onConfirm?: () => void
+}
+
+interface MyDialogProps extends Omit<DialogProps, 'open'> {
+    open?: boolean
 }
 
 const defaultOpenDialogProps: OpenDialogProps = {

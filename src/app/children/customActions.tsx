@@ -2,7 +2,7 @@ import { useDialogContext } from "@/contexts/Dialog";
 import { AutoGraph, ManageHistory, QueryStats } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import { useRouter } from 'next/navigation';
-import { AverageLineChart } from "./charts/averageLineChart";
+import { AverageLineChart } from "./charts/barChartAverageContainer";
 import { LineChartComparative } from "./charts/comparativeLineChart";
 
 type CustomActionsProps = {
@@ -33,7 +33,10 @@ function CustomActions(props: CustomActionsProps) {
                             dialogContent: <LineChartComparative
                                 childrenId={item.id}
                             />,
-                            withButtonConfirm: false
+                            withButtonConfirm: false,
+                            dialogProps: {
+                                maxWidth: 'lg'
+                            }
                         })
                     }}
                 />
@@ -47,7 +50,10 @@ function CustomActions(props: CustomActionsProps) {
                             dialogContent: <AverageLineChart
                                 childrenId={item.id}
                             />,
-                            withButtonConfirm: false
+                            withButtonConfirm: false,
+                            dialogProps: {
+                                maxWidth: 'lg'
+                            }
                         })
                     }}
                 />

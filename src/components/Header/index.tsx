@@ -8,7 +8,13 @@ const Header = () => {
 
     return (
         <div className="h-1 flex items-center text-center justify-between bg-zinc-900 p-10">
-            <NavMenu />
+            {
+                // TODO melhorar futuramente
+                // Só mostra o menu se for pediatra
+                authContext.user?.type === 0 ? (
+                    <NavMenu />
+                ) : null
+            }
             <Logo />
             <DropdownMenuMyAccount avatar={authContext.user?.avatar} />
         </div>
