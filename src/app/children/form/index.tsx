@@ -33,7 +33,7 @@ function Form(props: FormChildrenProps) {
                     { label: 'Feminino', value: 1 }
                 ]}
                 register={register('gender')}
-                initialValue={item.gender}
+                initialValue={item?.gender}
                 errorMessage={errors.gender?.message}
             />
             <ComboBoxInput

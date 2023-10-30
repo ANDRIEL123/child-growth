@@ -14,7 +14,7 @@ const ChildrenPage = () => {
         <>
             <Header />
             <Typography className="ml-5 mt-5 text-2xl text-center">
-                {'Gerenciamento de Pacientes'}
+                Gerenciamento de Pacientes
             </Typography>
             <Suspense fallback={<p>Carregando...</p>}>
                 <DataTable

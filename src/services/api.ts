@@ -27,6 +27,12 @@ api.interceptors.response.use(
                     window.location.href = "http://localhost:3000/login";
                 }, 2000)
                 break;
+            case 403:
+                toast.error('O usuário não possuí acesso a esse recurso.')
+                setTimeout(() => {
+                    window.location.href = "http://localhost:3000/login";
+                }, 2000)
+                break;
             default:
                 toast.error(message)
         }

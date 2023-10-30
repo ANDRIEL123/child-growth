@@ -2,6 +2,7 @@ import { useDialogContext } from "@/contexts/Dialog";
 import { AutoGraph, ManageHistory, QueryStats } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import { useRouter } from 'next/navigation';
+import { showLoading } from 'react-global-loading';
 import { AverageLineChart } from "./charts/barChartAverageContainer";
 import { LineChartComparative } from "./charts/comparativeLineChart";
 
@@ -20,7 +21,11 @@ function CustomActions(props: CustomActionsProps) {
                 <ManageHistory
                     className="hover:cursor-pointer ml-4"
                     onClick={() => {
+                        showLoading(true)
                         router.push(`patient-consultation?id=${item.id}`)
+                        setTimeout(() => {
+                            showLoading(false)
+                        }, 500)
                     }}
                 />
             </Tooltip>

@@ -42,6 +42,7 @@ import { Add, Delete, Edit } from '@mui/icons-material';
 import { Tooltip } from "@mui/material";
 import { useRouter } from 'next/navigation';
 import Form from "../Form";
+import { Loader } from "../Loader";
 import { Checkbox } from "../ui/checkbox";
 
 type DataTableProps = {
@@ -213,7 +214,7 @@ export function DataTable(props: DataTableProps) {
     })
 
     if (isLoading) {
-        return null
+        return <Loader />
     }
 
     // Submit do formulário

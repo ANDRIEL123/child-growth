@@ -1,22 +1,22 @@
 
 "use client"
 
+import Logo, { Color } from "@/components/Logo"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuthContext } from "@/contexts/Auth"
+import { httpGet } from "@/services"
 import { getAuthentication } from "@/services/auth"
+import { UserAuthProps } from "@/types/UserAuthProps"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { head } from 'lodash'
+import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { useState } from "react"
+import { showLoading } from 'react-global-loading'
 import { useForm } from 'react-hook-form'
-
-import Logo, { Color } from "@/components/Logo"
-import { httpGet } from "@/services"
-import { UserAuthProps } from "@/types/UserAuthProps"
-import Link from "next/link"
 import { UserSchemaFormData, userSchema } from "./schema"
 
 export default function Login() {
@@ -33,6 +33,7 @@ export default function Login() {
     async function onSubmit(data: any) {
         setIsLoading(true)
         try {
+            showLoading(true);
             const authentication = await getAuthentication(data.email, data.password)
 
             authContext.login(authentication.accessToken)
@@ -55,6 +56,7 @@ export default function Login() {
         } catch (error) {
             throw error
         } finally {
+            showLoading(false)
             setIsLoading(false)
         }
     }

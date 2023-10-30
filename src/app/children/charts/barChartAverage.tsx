@@ -2,9 +2,9 @@ import { BarChart } from "@/components/Charts/BarChart"
 import { httpGet } from "@/services"
 import { get } from "lodash"
 import { useEffect, useState } from "react"
-import { LineChartAverageProps } from "./barChartAverageContainer"
+import { BarChartAverageProps } from "./barChartAverageContainer"
 
-export function LineChartAverage(props: LineChartAverageProps) {
+export function BarChartAverage(props: BarChartAverageProps) {
     const [data, setData] = useState<any[]>([])
     const {
         childrenId,
