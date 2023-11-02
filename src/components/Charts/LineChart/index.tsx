@@ -23,11 +23,16 @@ export function LineChart(props: LineChartProps) {
 
     return (
         <Chart
-            chartType='LineChart'
+            chartType='Line'
             width={width}
             height={height}
             data={data}
-            options={options}
+            options={{
+                ...options,
+                chart: {
+                    title: options.title
+                }
+            }}
         />
     )
 }
