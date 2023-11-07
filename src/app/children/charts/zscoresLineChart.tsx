@@ -53,7 +53,6 @@ export function ZScoresLineChart(props: ZScoresProps) {
         fetchData()
     }, [])
 
-
     return (
         <LineChart
             data={data}

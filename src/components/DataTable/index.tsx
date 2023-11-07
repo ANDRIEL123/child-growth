@@ -40,7 +40,6 @@ import { httpDelete, httpGet, httpPost, httpPut } from "@/services";
 import { FormChildrenProps } from "@/types/FormChildrenProps";
 import { Add, Delete, Edit } from '@mui/icons-material';
 import { Tooltip } from "@mui/material";
-import { useRouter } from 'next/navigation';
 import Form from "../Form";
 import { Loader } from "../Loader";
 import { Checkbox } from "../ui/checkbox";
@@ -97,6 +96,7 @@ const getColumnsActions = (
     const columnsActions: ColumnDef<any>[] = [
         {
             id: "actions",
+            header: 'Ações',
             cell: ({ row }) => {
                 const id = row.original.id
 
@@ -153,7 +153,6 @@ const getColumnsActions = (
 
 export function DataTable(props: DataTableProps) {
     const { openDialog, closeDialog } = useDialogContext()
-    const router = useRouter()
 
     const {
         columns: newColumns,

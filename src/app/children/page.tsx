@@ -23,7 +23,7 @@ const ChildrenPage = () => {
                     endpoint="/children"
                     form={Form}
                     schema={schema}
-                    dialogTitleKey="Criança"
+                    dialogTitleKey="Paciente"
                     customActionsComponent={CustomActions}
                     withManage
                 />
