@@ -18,7 +18,7 @@ api.interceptors.response.use(
     (error) => {
         let message
 
-        if (error as AxiosError) {
+        if (error as AxiosError && !error.response?.data?.message) {
             message = error.message
         }
         else {
@@ -31,13 +31,13 @@ api.interceptors.response.use(
             case 401:
                 toast.error('Usuário não autorizado.')
                 setTimeout(() => {
-                    window.location.href = "http://localhost:3000/login";
+                    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/login`;
                 }, 2000)
                 break;
             case 403:
                 toast.error('O usuário não possuí acesso a esse recurso.')
                 setTimeout(() => {
-                    window.location.href = "http://localhost:3000/login";
+                    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/login`;
                 }, 2000)
                 break;
             default:

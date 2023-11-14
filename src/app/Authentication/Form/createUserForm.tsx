@@ -23,10 +23,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { register, control, handleSubmit, setError, formState: {
     errors
   } } = useForm<UserSchemaFormData>({
-    resolver: zodResolver(userSchema)
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      type: 0
+    }
   });
 
   async function onSubmit(data: any) {
+    console.log('xxxx')
     setIsLoading(true)
 
     const file = control._formValues.avatar[0]
