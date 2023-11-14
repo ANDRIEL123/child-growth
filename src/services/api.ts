@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
 // Configuração global do Axios
 const api = axios.create({
-    baseURL: 'https://localhost:7085'
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL
 })
 
 api.interceptors.response.use(
@@ -16,11 +16,18 @@ api.interceptors.response.use(
         return response
     },
     (error) => {
-        const message = error.response.data.message ??
-            error.response.data?.split('\r')[0] ??
-            'Ocorreu algum erro.'
+        let message
 
-        switch (error.response.status) {
+        if (error as AxiosError) {
+            message = error.message
+        }
+        else {
+            message = error.response?.data?.message ??
+                error.response.data?.split('\r')[0] ??
+                'Ocorreu algum erro.'
+        }
+
+        switch (error?.response?.status) {
             case 401:
                 toast.error('Usuário não autorizado.')
                 setTimeout(() => {

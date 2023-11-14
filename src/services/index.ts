@@ -14,7 +14,7 @@ const httpGet = async (endpoint: string, params?: object) => {
             }
         })
 
-        return response.data
+        return response?.data
     } catch (error) {
         throw error
     }
