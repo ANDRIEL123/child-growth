@@ -19,7 +19,7 @@ export function BarChartAverage(props: BarChartAverageProps) {
                 chartType
             }) as any[]
 
-            let finalData = [['Competência', 'Média P50', alias]] as any[]
+            let finalData = [['Meses de vida', 'Média P50', alias]] as any[]
 
             response.map(item => {
                 let element = []

@@ -47,6 +47,8 @@ export function ZScoresLineChart(props: ZScoresProps) {
                 finalData.push(element)
             })
 
+            console.log(finalData)
+
             setData(finalData)
         }
 

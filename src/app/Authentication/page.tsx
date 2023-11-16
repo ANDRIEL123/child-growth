@@ -1,15 +1,9 @@
-import { Metadata } from "next"
 import Link from "next/link"
 
 import Logo from "@/components/Logo"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UserAuthForm } from "./Form/createUserForm"
-
-export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
-}
 
 export default function AuthenticationPage() {
   return (
