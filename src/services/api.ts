@@ -18,7 +18,7 @@ api.interceptors.response.use(
     (error) => {
         let message
 
-        if (error as AxiosError && !error.response?.data?.message) {
+        if (error as AxiosError && !error.response?.data?.message && !error.response?.data) {
             message = error.message
         }
         else {
